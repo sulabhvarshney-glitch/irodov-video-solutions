@@ -1,0 +1,96 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model Chapter {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  order       Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  problems Problem[]
+
+  @@map("chapters")
+}
+
+model Problem {
+  id             String    @id @default(cuid())
+  chapterId      String
+  problemNumber  Int
+  title          String
+  description    String
+  difficulty     Difficulty @default(MEDIUM)
+  youtubeVideoId String?
+  duration       Int?      // in seconds
+  status         ProblemStatus @default(NOT_STARTED)
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  chapter        Chapter   @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+  videoQueue     VideoQueue[]
+  userProgress   UserProgress[]
+
+  @@unique([chapterId, problemNumber])
+  @@map("problems")
+}
+
+model VideoQueue {
+  id             String      @id @default(cuid())
+  problemId      String
+  status         QueueStatus @default(PENDING)
+  generationData String?     // JSON data for generation parameters
+  errorMessage   String?
+  createdAt      DateTime    @default(now())
+  completedAt    DateTime?
+  startedAt      DateTime?
+
+  problem        Problem     @relation(fields: [problemId], references: [id], onDelete: Cascade)
+
+  @@map("video_queue")
+}
+
+model UserProgress {
+  id          String   @id @default(cuid())
+  userId      String   // This would be the user ID from authentication
+  problemId   String
+  completedAt DateTime?
+  rating      Int?     // 1-5 stars
+  notes       String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  problem     Problem  @relation(fields: [problemId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, problemId])
+  @@map("user_progress")
+}
+
+enum Difficulty {
+  EASY
+  MEDIUM
+  HARD
+}
+
+enum ProblemStatus {
+  NOT_STARTED
+  IN_PROGRESS
+  COMPLETED
+  FAILED
+}
+
+enum QueueStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+}
