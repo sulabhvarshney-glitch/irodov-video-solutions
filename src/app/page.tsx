@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { BookOpen, Play, Users, TrendingUp } from "lucide-react";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -18,10 +19,12 @@ export default function Home() {
           clear voice-overs and precise animations
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <Button size="lg" className="text-lg px-8 py-3">
-            <BookOpen className="mr-2 h-5 w-5" />
-            Explore Chapters
-          </Button>
+          <Link href="/chapters">
+            <Button size="lg" className="text-lg px-8 py-3">
+              <BookOpen className="mr-2 h-5 w-5" />
+              Explore Chapters
+            </Button>
+          </Link>
           <Button variant="outline" size="lg" className="text-lg px-8 py-3">
             <Play className="mr-2 h-5 w-5" />
             Watch Demo
