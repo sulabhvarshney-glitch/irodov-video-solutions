@@ -11,7 +11,7 @@ export default function Home() {
           Irodov Video Solutions
         </h1>
         <p className="text-xl md:text-2xl text-gray-600 dark:text-gray-300 mb-8 max-w-3xl mx-auto">
-          AI-generated video solutions for I.E. Irodov&apos;s "Problems in General Physics"
+          AI-generated video solutions for I.E. Irodov&apos;s &ldquo;Problems in General Physics&rdquo;
         </p>
         <p className="text-lg text-gray-500 dark:text-gray-400 mb-12 max-w-2xl mx-auto">
           Master physics with comprehensive, chapter-wise video explanations featuring 
